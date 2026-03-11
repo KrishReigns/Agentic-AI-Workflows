@@ -1,0 +1,13 @@
+# Never commit real credentials
+*.env
+.env*
+secrets/
+*_credentials.json
+
+# n8n local data
+.n8n/
+n8n_data/
+
+# OS files
+.DS_Store
+Thumbs.db

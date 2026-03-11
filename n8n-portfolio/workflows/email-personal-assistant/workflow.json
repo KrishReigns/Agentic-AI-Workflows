@@ -1,0 +1,427 @@
+{
+  "name": "Email Personal Assistant",
+  "nodes": [
+    {
+      "parameters": {
+        "description": "=A tool for writing long-form, high-conversion persuasive sales letters.\nCRITICAL INSTRUCTION: When you send the prompt to this tool, you MUST explicitly ask it to follow the AIDA structure (Attention, Interest, Desire, Action). \nCombine the user's request with this structure requirement into a single JSON object.\nExample: {\"prompt\": \"Write a sales letter for [User Request] using strict AIDA structure.\"}",
+        "workflowId": {
+          "__rl": true,
+          "value": "YNqUOMpY4vOvlaUe",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/YNqUOMpY4vOvlaUe",
+          "cachedResultName": "sales letter agent"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "id": "d74958c6-bd45-46c0-9009-0ca7a928fa06",
+      "name": "Sales_Letter_Writer",
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "position": [
+        -272,
+        432
+      ],
+      "typeVersion": 2.2
+    },
+    {
+      "parameters": {
+        "description": "=A tool for generating short cold outreach emails.\nCRITICAL INSTRUCTION: When you send the prompt to this tool, you MUST explicitly ask it to keep the email under 150 words and include a clear Call to Action (CTA) at the end.\nCombine the user's request with these constraints into a single JSON object.\nExample: {\"prompt\": \"Write a short cold email about [User Request] with a clear CTA question at the end.\"}",
+        "workflowId": {
+          "__rl": true,
+          "value": "YNqUOMpY4vOvlaUe",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/YNqUOMpY4vOvlaUe",
+          "cachedResultName": "sales letter agent"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "id": "18c918ed-367c-4736-b665-749d917ae208",
+      "name": "Cold_Email_Writer",
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "position": [
+        -112,
+        448
+      ],
+      "typeVersion": 2.2,
+      "notesInFlow": false
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst output = items.map((item) => item?.json?.output).join(\"\");\nreturn { output };\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        320,
+        64
+      ],
+      "id": "b815bd8e-176f-48b3-b38b-8e2bcb68da08",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentURL": "https://docs.google.com/document/d/1WrIN3I3gFUWEMgOMqR-L27SmBHRAVhIJFsNQEklAmhg/edit?usp=sharing",
+        "actionsUi": {
+          "actionFields": [
+            {
+              "action": "insert",
+              "text": "={{ $fromAI('actionFields0_Text', ``, 'string') }}"
+            }
+          ]
+        }
+      },
+      "id": "ab8def5b-03e5-42d8-867b-5ca0b8fd53ae",
+      "name": "Google Docs Tool",
+      "type": "n8n-nodes-base.googleDocsTool",
+      "typeVersion": 2,
+      "position": [
+        -16,
+        288
+      ],
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Google Docs account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $fromAI('file_id', 'ID of the file to update', 'string') }}",
+          "mode": "id"
+        },
+        "changeFileContent": "",
+        "newUpdatedFileName": "={{ $fromAI('file_prefix', 'Copy', 'string') }}_{{ $now.format('yyyyMMdd_HHmmss') }}",
+        "options": {}
+      },
+      "id": "8ef382be-e9a4-4e28-8854-4e6c1f2d0936",
+      "name": "Google Drive Tool",
+      "type": "n8n-nodes-base.googleDriveTool",
+      "typeVersion": 3,
+      "position": [
+        336,
+        320
+      ],
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "Receives a message from the user through an external web chat interface and initiates a workflow.",
+        "width": 150
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -880,
+        0
+      ],
+      "id": "61d22161-8c66-4424-8bd1-be6c7a78a781",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "Receives a message from the user through an external web chat interface and initiates a workflow.",
+        "width": 160
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -832,
+        352
+      ],
+      "id": "41466421-7729-4193-b3d7-a4d650eb7d8e",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "Stores the conversation history within a single session so that the Assistant can remember previous questions and user clarifications.",
+        "width": 150
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -576,
+        416
+      ],
+      "id": "c5343278-6b86-4c90-a1f8-217b584d9619",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "Cleans the AI response of technical prefixes and formats clean text for display in the chat window.",
+        "height": 112
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        544,
+        64
+      ],
+      "id": "d92582af-58b9-4dce-b541-25e88d96bc86",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "Performs the direct writing of the generated text into the document. Ensures proper formatting: adds two empty lines before writing, specifies the content type, date, and exact time after receiving the \"approve\" command.",
+        "width": 176
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        80,
+        416
+      ],
+      "id": "c69b9459-6f8a-4fed-a5ae-2927fc4b81af",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "A specialized tool for creating long persuasive texts. Configured to use the structure: Attention \u2014 Interest \u2014 Desire \u2014 Action.",
+        "width": 150
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -416,
+        624
+      ],
+      "id": "1e538654-9902-4337-bc34-33e3bd387b05",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "A specialized tool for lead generation. Generates short emails (up to 150 words) with a mandatory call to action (CTA).",
+        "height": 176,
+        "width": 192
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -176,
+        608
+      ],
+      "id": "3a0441bb-2021-4c96-bcbb-04f5258f58be",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 20
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -400,
+        352
+      ],
+      "id": "3800a22b-4128-4a3a-990d-62e0bd5efa93",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "public": true,
+        "mode": "webhook",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -688,
+        32
+      ],
+      "id": "1eb78683-b046-4cdd-9b1e-07c02d7f4214",
+      "name": "When chat message received",
+      "webhookId": "YOUR_WEBHOOKID",
+      "alwaysOutputData": false,
+      "notesInFlow": false
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "=Today's date: {{ $now.format('DD.MM.YYYY') }} Current time: {{ $now.format('HH:mm') }}\n\nYou are a professional editor and analyst. You have specialized tools for content creation.\n\nRULES FOR USING TOOLS:\n1. SALES TEXTS: If the user asks for a long text or a sales page, use the Sales_Letter_Writer tool. YOU MUST explicitly instruct the tool to use the AIDA structure.\n2. COLD EMAILS: If a short email for outreach is needed, use the Cold_Email_Writer tool. YOU MUST explicitly instruct the tool to keep the email short (up to 150 words) with a call to action (CTA).\n3. GENERAL REQUESTS: For other requests (greetings, ideas, posts), generate the response yourself.\n\nFORMATTING RULES (CRITICAL):\n1. TABOO: It is strictly forbidden to add the heading \"Generated copy\" or any technical introductions. Start the response directly with the text.\n2. APPROVE: Only after the text is created, add at the end: \"Write 'approve' to save this version to Google Docs.\"\n\nSTRUCTURE OF RECORDING IN GOOGLE DOCS (EXECUTED AFTER 'APPROVE'):\n[here two empty lines before the start of writing]\n### TYPE: [name]\nDate: [date] [time]\n\n[result text]\n\nPROHIBITIONS:\n- Do not ask the user to copy the text manually.\n- Do not use service phrases about \"copying\" in the answer text itself."
+        }
+      },
+      "id": "c5a9e149-8caa-46c5-9c55-19bb034b4e2b",
+      "name": "Assistant",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "position": [
+        -256,
+        64
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "content": "Provides access to the cloud file system. Responsible for searching for the required files, checking their availability, and organizing the storage structure, allowing the Assistant to interact with your storage.",
+        "height": 176
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        432,
+        320
+      ],
+      "id": "5e757b9c-9cde-4360-849d-a8e4c98d9a26",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "content": "The central logic node. Analyzes the user's intent and automatically selects the appropriate tool (Writer or Google Docs).",
+        "height": 112
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -16,
+        -48
+      ],
+      "id": "91663de8-d22d-45a5-bd6b-4415719fff4a",
+      "name": "Sticky Note9"
+    },
+    {
+      "parameters": {
+        "model": "openrouter/free",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        -576,
+        272
+      ],
+      "id": "2935a8b9-f354-4479-a41f-36a1bdb2fb01",
+      "name": "OpenRouter Chat Model",
+      "credentials": {
+        "openRouterApi": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "OpenRouter account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Sales_Letter_Writer": {
+      "ai_tool": [
+        [
+          {
+            "node": "Assistant",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cold_Email_Writer": {
+      "ai_tool": [
+        [
+          {
+            "node": "Assistant",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Docs Tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "Assistant",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive Tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "Assistant",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Assistant",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Assistant",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Assistant": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Assistant",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "YOUR_VERSIONID",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "YOUR_INSTANCEID"
+  },
+  "id": "Rb6cEBQtpSgtwXvQ",
+  "tags": []
+}
