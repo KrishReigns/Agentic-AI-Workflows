@@ -47,7 +47,7 @@
           "parameters": [
             {
               "name": "key",
-              "value": "REDACTED"
+              "value": "Your-Key-Here"
             }
           ]
         },
@@ -101,7 +101,7 @@
           "parameters": [
             {
               "name": "key",
-              "value": "REDACTED"
+              "value": "Your-Key-Here"
             }
           ]
         },
@@ -147,7 +147,7 @@
           "parameters": [
             {
               "name": "key",
-              "value": "REDACTED"
+              "value": "Your-Key-Here"
             }
           ]
         },
@@ -211,7 +211,7 @@
           "parameters": [
             {
               "name": "token",
-              "value": ""
+              "value": "Your-Token-Here"
             }
           ]
         },
